@@ -54,14 +54,17 @@ The app will automatically load data/complete_data.csv for calibration. You can 
 
 2. Python CLI (Command Line)
 Requirements: Python 3.7+ with the following packages:
-
+```
 pip install pandas numpy scikit-learn matplotlib seaborn
+```
 Run (English version):
+```
 python python/ugi_calculator.py
-
+```
 Run (Portuguese version):
+```
 python python/ugi_calculator_pt.py
-
+```
 The script will prompt you to enter:
 
 Locality name, population size, density, and distance to urban center.
