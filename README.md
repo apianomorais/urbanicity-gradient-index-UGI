@@ -1,5 +1,8 @@
 # Urbanicity Gradient Index (UGI) – Calculator
 
+[![DOI](https://zenodo.org/badge/1335166261.svg)](https://doi.org/10.5281/zenodo.21954272)
+
+Scientific paper DOI:
 [![DOI](https://img.shields.io/badge/DOI-10.1007/s44243--026--00089--2-blue)](https://doi.org/10.1007/s44243-026-00089-2)
 
 **Authors**: Juliana Melo Linhares Rangel, Apiano Ferreira Morais, Marcelo Alves Ramos  
