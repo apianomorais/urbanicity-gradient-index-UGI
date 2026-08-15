@@ -23,6 +23,7 @@ Weights for infrastructure variables are derived empirically using **Principal C
 ---
 
 ## Repository Structure
+```
 /
 ├── data/
 │ └── complete_data.csv # Calibration dataset (100 localities)
@@ -34,8 +35,8 @@ Weights for infrastructure variables are derived empirically using **Principal C
 ├── README.md # This file
 ├── LICENSE # MIT License
 └── .gitignore # Ignored files (R + Python)
+```
 
-**
 ---
 
 ## How to Use
@@ -47,7 +48,10 @@ Weights for infrastructure variables are derived empirically using **Principal C
 ```r
 install.packages(c("shiny", "shinydashboard", "DT", "plotly", 
                    "shinycssloaders", "shinyWidgets", "readr", 
-                   "dplyr", "ggplot2", "jsonlite", "R6"))**
+                   "dplyr", "ggplot2", "jsonlite", "R6"))
+```
+Run the app:
+```
 shiny::runApp("R/UGI_user_EN.R")
 ```
 The app will automatically load data/complete_data.csv for calibration. You can then enter locality data and infrastructure presence interactively.
@@ -96,7 +100,10 @@ Rangel, J.M.L., Morais, A.F. & Ramos, M.A. Beyond binary urban-rural classificat
 https://doi.org/10.1007/s44243-026-00089-2
 
 License
-This project is licensed under the MIT License – see the LICENSE file for details. You are free to use, modify, and distribute the code, provided that proper attribution is given.
+
+This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details. You are free to use, modify, and distribute the code, provided that proper attribution is given.
+
+---
 
 Support
-For questions, bug reports, or feature requests, please open an Issue on this repository.
+For questions, bug reports, or feature requests, please open an [Issue](https://github.com/apianomorais/urbanicity-gradient-index-UGI/issues) on this repository.
