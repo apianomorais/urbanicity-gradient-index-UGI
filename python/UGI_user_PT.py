@@ -96,6 +96,10 @@ class IndiceGradienteUrbanicidade:
             }
         }
         
+        # Aeroportos, da menor para a maior categoria: só a maior pontua
+        self.aeroportos = ['Local Airport (<10 km)', 'Medium Airport (<20 km)',
+                           'Large Airport (< 30 km)']
+
         # Lista achatada de variáveis de infraestrutura
         self.variaveis_infraestrutura = []
         for categoria in self.categorias_infraestrutura.values():
@@ -120,7 +124,7 @@ class IndiceGradienteUrbanicidade:
         print("\n📊 Esta ferramenta calcula pontuações de urbanicidade (0-100) usando:")
         print("   • Tamanho e densidade populacional")
         print("   • Distância até centros urbanos")  
-        print("   • Desenvolvimento de infraestrutura (37 variáveis)")
+        print("   • Desenvolvimento de infraestrutura (34 variáveis)")
         print("\n🎯 Pontuações > 50 = Características urbanas")
         print("🎯 Pontuações ≤ 50 = Características rurais")
         print("="*80)
@@ -336,9 +340,21 @@ class IndiceGradienteUrbanicidade:
             pontuacao_distancia = self.W_L * (self.limiar_distancia - distancia) / self.limiar_distancia
             pontuacao_distancia = max(0, min(pontuacao_distancia, self.W_L))
         
-        # Pontuação de infraestrutura (soma ponderada)
+        # Pontuação de infraestrutura (soma ponderada).
+        # Entre as três categorias de aeroporto conta apenas a maior presente,
+        # como descrito na secção 2.5 do artigo: somar as três contaria o mesmo
+        # aeroporto mais de uma vez, porque um aeroporto grande satisfaz também
+        # os critérios de médio e de local.
+        maior_aeroporto = None
+        for var in reversed(self.aeroportos):
+            if dados_infraestrutura.get(var, 0):
+                maior_aeroporto = var
+                break
+
         pontuacao_infra = 0
         for var in self.variaveis_infraestrutura:
+            if var in self.aeroportos and var != maior_aeroporto:
+                continue
             presenca = dados_infraestrutura.get(var, 0)
             peso = self.pesos_infraestrutura.get(var, 0)
             pontuacao_infra += presenca * peso
@@ -532,7 +548,7 @@ class IndiceGradienteUrbanicidade:
         print("de urbanicidade de 0-100, superando limitações das classificações")  
         print("binárias urbano-rurais.")
         print("\n🔬 BASE CIENTÍFICA:")
-        print("• Baseado em Análise de Componentes Principais de 37 variáveis de infraestrutura")
+        print("• Baseado em Análise de Componentes Principais de 34 variáveis de infraestrutura")
         print("• Validado em 100 localidades do rural aos grandes centros metropolitanos")
         print("• Pesquisa publicada com kappa de Cohen = 1,00 (classificação perfeita)")
         print("\n📊 COMPONENTES DO IGU:")

@@ -90,6 +90,11 @@ UrbanicityGradientIndex <- R6Class("UrbanicityGradientIndex",
                                      explained_variance_ratio = NULL,
                                      is_calibrated = FALSE,
                                      infrastructure_variables = NULL,
+                                     # Airports, smallest to largest: only the
+                                     # largest category present is counted
+                                     airports = c("Local Airport (<10 km)",
+                                                  "Medium Airport (<20 km)",
+                                                  "Large Airport (< 30 km)"),
                                      data_loaded = FALSE,
                                      error_message = NULL,
                                      
@@ -236,9 +241,21 @@ UrbanicityGradientIndex <- R6Class("UrbanicityGradientIndex",
                                          distance_score <- max(0, min(distance_score, self$W_L))
                                        }
                                        
-                                       # Infrastructure score (weighted sum)
+                                       # Infrastructure score (weighted sum).
+                                       # Among the three airport categories only the highest one
+                                       # present is counted, as in section 2.5 of the paper: a
+                                       # large airport also meets the medium and local criteria,
+                                       # so adding all three counts the same airport three times.
+                                       largest_airport <- NA_character_
+                                       for(var in rev(self$airports)) {
+                                         presence <- ifelse(var %in% names(infrastructure_data), infrastructure_data[[var]], 0)
+                                         if(!is.na(presence) && presence == 1) { largest_airport <- var; break }
+                                       }
+
                                        infra_score <- 0
                                        for(var in self$infrastructure_variables) {
+                                         if(var %in% self$airports &&
+                                            (is.na(largest_airport) || var != largest_airport)) next
                                          presence <- ifelse(var %in% names(infrastructure_data), infrastructure_data[[var]], 0)
                                          weight <- ifelse(var %in% names(self$infrastructure_weights), 
                                                           self$infrastructure_weights[[var]], 0)
@@ -853,7 +870,16 @@ server <- function(input, output, session) {
     # Calculate infrastructure score in real-time
     infra_score <- 0
     if(ugi_calc$is_calibrated) {
+      # só a maior categoria de aeroporto presente pontua (secção 2.5)
+      largest_airport <- NA_character_
+      for(var in rev(ugi_calc$airports)) {
+        input_id <- var_to_id(var)
+        presence <- ifelse(is.null(input[[input_id]]), 0, as.numeric(input[[input_id]]))
+        if(presence == 1) { largest_airport <- var; break }
+      }
       for(var in ugi_calc$infrastructure_variables) {
+        if(var %in% ugi_calc$airports &&
+           (is.na(largest_airport) || var != largest_airport)) next
         input_id <- var_to_id(var)
         presence <- ifelse(is.null(input[[input_id]]), 0, as.numeric(input[[input_id]]))
         weight <- ifelse(var %in% names(ugi_calc$infrastructure_weights), 

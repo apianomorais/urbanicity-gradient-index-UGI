@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IGU · Lote e calibração</title>
+<meta name="description" content="Calcule o IGU de muitas localidades a partir de um CSV, ou recalibre os pesos com o seu próprio conjunto de dados.">
+<link rel="icon" href="assets/img/lfca.png">
+<link rel="stylesheet" href="assets/css/estilo.css">
+</head>
+<body>
+
+<header class="topo"><div class="envoltorio"></div></header>
+
+<main class="envoltorio">
+  <section class="abertura">
+    <h1 data-t="t_lote"></h1>
+    <p class="linha-fina"
+       data-tpt="Nada do que você soltar aqui sai do seu computador: o arquivo é lido e processado dentro do navegador."
+       data-ten="Nothing you drop here leaves your computer: the file is read and processed inside your browser."></p>
+  </section>
+
+  <section class="painel">
+    <h2 data-t="h_lote"></h2>
+    <p class="recado" data-t="sub_lote"></p>
+    <label class="soltar" id="solta-lote">
+      <input type="file" id="arq-lote" accept=".csv,text/csv">
+      <span data-t="solte"></span>
+    </label>
+    <div class="botoes">
+      <button class="botao" id="modelo" data-t="b_modelo"></button>
+      <button class="botao cheio" id="baixar-lote" data-t="b_resultado" disabled></button>
+    </div>
+    <p class="recado" id="recado-lote"></p>
+    <div class="rolagem" id="rolagem-lote" style="display:none;margin-top:12px">
+      <table class="dados">
+        <thead><tr id="cab-lote"></tr></thead>
+        <tbody id="corpo-lote"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="painel">
+    <h2 data-t="h_recal"></h2>
+    <p class="recado" data-t="sub_recal"></p>
+    <label class="soltar" id="solta-cal">
+      <input type="file" id="arq-cal" accept=".csv,text/csv">
+      <span data-t="solte"></span>
+    </label>
+    <p class="recado" id="recado-cal"></p>
+    <div id="saida-cal" style="display:none">
+      <div class="grade" style="grid-template-columns:1fr 1fr;gap:20px;margin:16px 0 0">
+        <div class="rolagem">
+          <table class="dados">
+            <thead><tr>
+              <th data-tpt="Variável" data-ten="Variable"></th>
+              <th style="text-align:right" data-tpt="Seu peso" data-ten="Your weight"></th>
+              <th style="text-align:right" data-tpt="Artigo" data-ten="Paper"></th>
+            </tr></thead>
+            <tbody id="corpo-cal"></tbody>
+          </table>
+        </div>
+        <div>
+          <canvas class="tela" id="grafico-cal"></canvas>
+          <p class="legenda"
+             data-tpt="Cada ponto é uma variável: no eixo horizontal o peso publicado, no vertical o peso que os seus dados produzem. A diagonal é a concordância perfeita."
+             data-ten="Each point is a variable: the published weight on the horizontal axis, the weight your data produce on the vertical one. The diagonal is perfect agreement."></p>
+        </div>
+      </div>
+      <div class="botoes">
+        <button class="botao cheio" id="usar-cal" data-t="b_usar"></button>
+        <button class="botao" id="voltar-cal" data-t="b_voltar"></button>
+      </div>
+      <p class="recado" id="estado-pesos"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="rodape"><div class="envoltorio"></div></footer>
+
+<script src="assets/js/dados.js"></script>
+<script src="assets/js/igu.js"></script>
+<script src="assets/js/lote.js"></script>
+</body>
+</html>

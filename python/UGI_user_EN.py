@@ -97,6 +97,10 @@ class UrbanicityGradientIndex:
         }
         
         # Flatten infrastructure variables list
+        # Airports, from the smallest to the largest: only the largest scores
+        self.airports = ['Local Airport (<10 km)', 'Medium Airport (<20 km)',
+                         'Large Airport (< 30 km)']
+
         self.infrastructure_variables = []
         for category in self.infrastructure_categories.values():
             self.infrastructure_variables.extend(category.keys())
@@ -120,7 +124,7 @@ class UrbanicityGradientIndex:
         print("\n📊 This tool calculates urbanicity scores (0-100) using:")
         print("   • Population size and density")
         print("   • Distance to urban centers")  
-        print("   • Infrastructure development (37 variables)")
+        print("   • Infrastructure development (34 variables)")
         print("\n🎯 Scores > 50 = Urban characteristics")
         print("🎯 Scores ≤ 50 = Rural characteristics")
         print("="*80)
@@ -331,9 +335,21 @@ class UrbanicityGradientIndex:
             distance_score = self.W_L * (self.distance_threshold - distance) / self.distance_threshold
             distance_score = max(0, min(distance_score, self.W_L))
         
-        # Infrastructure score (weighted sum)
+        # Infrastructure score (weighted sum).
+        # Among the three airport categories only the highest one present is
+        # counted, as described in section 2.5 of the paper: adding all three
+        # would count the same airport more than once, since a large airport
+        # also meets the medium and local criteria.
+        largest_airport = None
+        for var in reversed(self.airports):
+            if infrastructure_data.get(var, 0):
+                largest_airport = var
+                break
+
         infra_score = 0
         for var in self.infrastructure_variables:
+            if var in self.airports and var != largest_airport:
+                continue
             presence = infrastructure_data.get(var, 0)
             weight = self.infrastructure_weights.get(var, 0)
             infra_score += presence * weight
@@ -527,7 +543,7 @@ class UrbanicityGradientIndex:
         print("of urbanicity from 0-100, overcoming limitations of binary")  
         print("urban-rural classifications.")
         print("\n🔬 SCIENTIFIC BASIS:")
-        print("• Based on Principal Component Analysis of 37 infrastructure variables")
+        print("• Based on Principal Component Analysis of 34 infrastructure variables")
         print("• Validated on 100 localities spanning rural to major metropolitan areas")
         print("• Published research with Cohen's kappa = 1.00 (perfect classification)")
         print("\n📊 UGI COMPONENTS:")

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IGU · Metodologia</title>
+<meta name="description" content="As quatro parcelas do Índice de Gradiente de Urbanicidade, os pesos obtidos por PCA e a validação publicada.">
+<link rel="icon" href="assets/img/lfca.png">
+<link rel="stylesheet" href="assets/css/estilo.css">
+<script>
+  window.MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+                     svg: { fontCache: 'global' } };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+</head>
+<body>
+
+<header class="topo"><div class="envoltorio"></div></header>
+
+<main class="envoltorio">
+  <section class="abertura">
+    <h1 data-t="t_met"></h1>
+    <p class="linha-fina"
+       data-tpt="O índice soma quatro parcelas, cada uma com um teto fixo: população (40), densidade (10), distância (10) e infraestrutura (40). As três primeiras são funções contínuas de um único número; a quarta é uma soma de itens presentes, com pesos obtidos por análise de componentes principais."
+       data-ten="The index adds four components, each with a fixed ceiling: population (40), density (10), distance (10) and infrastructure (40). The first three are continuous functions of a single number; the fourth is a sum over the items present, with weights derived by principal component analysis."></p>
+  </section>
+
+  <div class="grade" style="grid-template-columns: 1fr 380px">
+    <div>
+      <section class="painel">
+        <h2 data-tpt="As quatro parcelas" data-ten="The four components"></h2>
+
+        <div class="equacao">
+          <div class="rotulo" data-tpt="Tamanho populacional: sigmoide em log, com inflexão em 2000 habitantes"
+               data-ten="Population size: sigmoid in log scale, inflection at 2000 inhabitants"></div>
+          \[ S_N=\frac{W_N}{1+e^{-\alpha\,[\log_{10}N-\log_{10}R_N]}},\qquad W_N=40,\;\alpha=2,\;R_N=2000 \]
+        </div>
+        <p data-tpt="A escolha do ponto de inflexão vem do critério da Comissão Europeia para agrupamentos urbanos. O formato em S reproduz o que se observa: povoados muito pequenos variam pouco entre si, e cidades muito grandes também, mas entre os dois extremos a urbanicidade muda depressa."
+           data-ten="The inflection point follows the European Commission threshold for urban clusters. The S shape reproduces what is observed: very small settlements vary little among themselves, and so do very large cities, while in between urbanicity changes fast."></p>
+
+        <div class="equacao">
+          <div class="rotulo" data-tpt="Densidade populacional: saturação exponencial"
+               data-ten="Population density: exponential saturation"></div>
+          \[ S_D=W_D\left(1-e^{-\beta D}\right),\qquad W_D=10,\;\beta=0{,}001 \]
+        </div>
+        <p data-tpt="O retorno é decrescente: as primeiras centenas de habitantes por quilômetro quadrado trazem infraestrutura junto, e adensar uma metrópole que já é densa acrescenta pouco."
+           data-ten="Returns diminish: the first few hundred inhabitants per square kilometre bring infrastructure with them, while packing an already dense metropolis adds little."></p>
+
+        <div class="equacao">
+          <div class="rotulo" data-tpt="Distância até a sede urbana: queda linear até 50 km"
+               data-ten="Distance to the urban centre: linear decay up to 50 km"></div>
+          \[ S_L=W_L\,\max\!\left[0,\;\frac{50-L}{50}\right],\qquad W_L=10 \]
+        </div>
+        <p data-tpt="Os 50 km são o limite usual das zonas de influência urbana diária, o mesmo que os códigos RUCA adotam nos Estados Unidos. O artigo testou limiares de 10 a 100 km e a classificação binária não mudou em nenhum deles."
+           data-ten="The 50 km mark is the usual limit of daily urban influence zones, the same adopted by the RUCA codes in the United States. The paper tested thresholds from 10 to 100 km and the binary classification did not change in any of them."></p>
+
+        <div class="equacao">
+          <div class="rotulo" data-tpt="Infraestrutura: soma dos itens presentes, com pesos empíricos"
+               data-ten="Infrastructure: sum over the items present, with empirical weights"></div>
+          \[ S_I=\sum_{v=1}^{V}p_v\,w_v,\qquad
+             \omega_v=\sigma_1|x_v|+\sigma_2|y_v|,\qquad
+             w_v=W_I\,\frac{\omega_v}{\sum_u \omega_u} \]
+        </div>
+        <p data-tpt="Cada item entra como presença ou ausência. O peso de cada um não é arbitrado: sai das cargas do item nas duas primeiras componentes principais, ponderadas pela variância que cada componente explica, e depois normalizadas para somar 40 pontos."
+           data-ten="Each item enters as presence or absence. Its weight is not assigned by judgement: it comes from the item's loadings on the first two principal components, weighted by the variance each component explains, and then normalized to add up to 40 points."></p>
+
+        <div class="equacao">
+          <div class="rotulo" data-tpt="E o índice é a soma" data-ten="And the index is the sum"></div>
+          \[ UGI=S_N+S_D+S_L+S_I \]
+        </div>
+
+        <div class="aviso">
+          <span data-tpt="Aeroportos: entre as três categorias conta apenas a maior presente. Um aeroporto grande também satisfaz os critérios de médio e de local, e somar os três pontuaria o mesmo aeroporto três vezes."
+                data-ten="Airports: among the three categories only the highest one present is counted. A large airport also meets the medium and local criteria, so adding all three would score the same airport three times."></span>
+        </div>
+      </section>
+
+      <section class="painel">
+        <h2 data-tpt="O que a validação mostrou" data-ten="What the validation showed"></h2>
+        <ul>
+          <li data-tpt="Concordância perfeita com a classificação urbano-rural tradicional no limiar de 50 pontos: kappa de Cohen igual a 1,00, com as 27 localidades rurais entre 4,5 e 50,0 e as 73 urbanas entre 50,1 e 100."
+              data-ten="Perfect agreement with the traditional urban-rural classification at the 50-point threshold: Cohen's kappa equal to 1.00, with the 27 rural localities between 4.5 and 50.0 and the 73 urban ones between 50.1 and 100."></li>
+          <li data-tpt="Cinco fatores explicam 100 % da variância, e os três primeiros já respondem por 85,6 %."
+              data-ten="Five factors explain 100 % of the variance, and the first three already account for 85.6 %."></li>
+          <li data-tpt="Em 5000 simulações com subamostras de 50 a 90 localidades, o erro absoluto médio ficou entre 0,21 e 0,07 ponto, e nenhuma localidade saiu mais de 5 pontos do seu valor de referência."
+              data-ten="Across 5000 simulations with subsamples of 50 to 90 localities, the mean absolute error stayed between 0.21 and 0.07 points, and no locality fell more than 5 points from its reference value."></li>
+          <li data-tpt="Daí a recomendação prática: 50 localidades já bastam para calibrar o índice numa região nova, desde que cubram toda a faixa de urbanização local."
+              data-ten="Hence the practical recommendation: 50 localities are enough to calibrate the index in a new region, provided they span the full local urbanization range."></li>
+        </ul>
+      </section>
+
+      <section class="painel">
+        <h2 data-tpt="Como calcular fora desta página" data-ten="Computing it outside this page"></h2>
+        <p data-tpt="O repositório traz a mesma conta em três implementações, todas lendo o arquivo de calibração data/complete_data.csv:"
+           data-ten="The repository carries the same computation in three implementations, all reading the calibration file data/complete_data.csv:"></p>
+        <pre><code>python/UGI_user_PT.py   # linha de comando, em português
+python/UGI_user_EN.py   # linha de comando, em inglês
+R/UGI_user_EN.R         # aplicativo Shiny</code></pre>
+      </section>
+    </div>
+
+    <div>
+      <section class="painel">
+        <h2 data-tpt="Os 34 pesos" data-ten="The 34 weights"></h2>
+        <p class="recado"
+           data-tpt="Obtidos por PCA sobre as 100 localidades de calibração. PC1 explica 47,5 % e PC2 8,3 % da variância. Os pesos somam 40."
+           data-ten="Derived by PCA over the 100 calibration localities. PC1 explains 47.5 % and PC2 8.3 % of the variance. The weights add up to 40."></p>
+        <div class="rolagem">
+          <table class="dados">
+            <thead><tr>
+              <th data-tpt="Variável" data-ten="Variable"></th>
+              <th style="text-align:right" data-tpt="Peso" data-ten="Weight"></th>
+            </tr></thead>
+            <tbody id="tabela-pesos"></tbody>
+          </table>
+        </div>
+        <div class="botoes">
+          <button class="botao" id="baixar-pesos"
+                  data-tpt="Baixar os pesos (CSV)" data-ten="Download the weights (CSV)"></button>
+        </div>
+      </section>
+
+      <section class="painel">
+        <h2 data-tpt="Como citar" data-ten="How to cite"></h2>
+        <p style="font-size:.93rem">Rangel, J. M. L., Morais, A. F. &amp; Ramos, M. A.
+          <em>Beyond binary urban-rural classifications: a continuous urbanicity gradient index.</em>
+          Frontiers of Urban and Rural Planning <strong>4</strong>, 18 (2026).
+          <a href="https://doi.org/10.1007/s44243-026-00089-2">doi:10.1007/s44243-026-00089-2</a></p>
+        <p style="font-size:.93rem"
+           data-tpt="Código e dados: DOI 10.5281/zenodo.21954272, licença MIT."
+           data-ten="Code and data: DOI 10.5281/zenodo.21954272, MIT license."></p>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer class="rodape"><div class="envoltorio"></div></footer>
+
+<script src="assets/js/dados.js"></script>
+<script src="assets/js/igu.js"></script>
+<script>
+(function () {
+  var I = window.IGU;
+  I.cabecalho('metodologia.html');
+  I.rodape();
+
+  function tabela() {
+    var corpo = document.getElementById('tabela-pesos');
+    corpo.textContent = '';
+    I.VARS.slice().sort(function (a, b) { return b.peso - a.peso; }).forEach(function (v) {
+      var tr = I.el(corpo, 'tr');
+      I.el(tr, 'td', '', I.idioma() === 'pt' ? v.pt : v.en);
+      I.el(tr, 'td', 'n', I.num(v.peso, 2));
+    });
+  }
+
+  document.getElementById('baixar-pesos').addEventListener('click', function () {
+    var linhas = ['variable,weight'];
+    I.VARS.slice().sort(function (a, b) { return b.peso - a.peso; }).forEach(function (v) {
+      linhas.push('"' + v.id + '",' + v.peso.toFixed(4));
+    });
+    I.baixa('ugi_pesos.csv', linhas.join('\n'), 'text/csv;charset=utf-8');
+  });
+
+  window.IGU_PAGINA = { idioma: tabela };
+  I.aplicaIdioma();
+  tabela();
+}());
+</script>
+</body>
+</html>

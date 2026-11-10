@@ -45,7 +45,9 @@ vignettes/*.pdf
 .Renviron
 
 # pkgdown site
-docs/
+# docs/ guarda a calculadora publicada no GitHub Pages, e vai versionada.
+# (a regra abaixo era do template do roxygen, que gera docs/ automaticamente)
+!docs/
 
 # translation temp files
 po/*~

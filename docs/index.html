@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IGU · Calculadora do Índice de Gradiente de Urbanicidade</title>
+<meta name="description" content="Calculadora do Índice de Gradiente de Urbanicidade (IGU/UGI): uma medida contínua de 0 a 100 da urbanicidade de uma localidade.">
+<link rel="icon" href="assets/img/lfca.png">
+<link rel="stylesheet" href="assets/css/estilo.css">
+</head>
+<body>
+
+<header class="topo"><div class="envoltorio"></div></header>
+
+<main class="envoltorio">
+
+  <section class="abertura">
+    <h1 data-t="t_calc"></h1>
+    <p class="linha-fina" data-t="sub_calc"></p>
+  </section>
+
+  <div class="grade">
+
+    <div>
+      <section class="painel">
+        <h2 data-t="h_demo"></h2>
+        <div class="campos">
+          <div class="campo" style="grid-column: 1 / -1">
+            <label for="nome" data-t="l_nome"></label>
+            <input type="text" id="nome" style="width:100%;padding:9px 10px;font:inherit;border:1px solid var(--linha);border-radius:8px">
+          </div>
+          <div class="campo">
+            <label for="pop" data-t="l_pop"></label>
+            <input type="number" id="pop" min="0" step="1" value="5000">
+            <div class="nota" data-t="n_pop"></div>
+          </div>
+          <div class="campo">
+            <label for="dens" data-t="l_dens"></label>
+            <input type="number" id="dens" min="0" step="any" value="60">
+            <div class="nota" data-t="n_dens"></div>
+          </div>
+          <div class="campo">
+            <label for="dist" data-t="l_dist"></label>
+            <input type="number" id="dist" min="0" step="any" value="25">
+            <div class="nota" data-t="n_dist"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="painel">
+        <h2 data-t="h_infra"></h2>
+        <p class="recado" data-t="sub_infra"></p>
+        <div id="dominios"></div>
+        <div class="aviso" data-t="aero_aviso"></div>
+      </section>
+    </div>
+
+    <div class="resultado">
+      <section class="painel">
+        <h2 data-t="h_result"></h2>
+        <div class="marcador" id="marcador">
+          <div class="valor" id="valor">0,0</div>
+          <div class="classe" id="classe"></div>
+        </div>
+        <div class="trilho"><div class="meio"></div><div class="agulha" id="agulha" style="left:0%"></div></div>
+        <div class="escala"><span>0</span><span>50</span><span>100</span></div>
+        <p class="recado" id="interpretacao" style="margin-top:10px"></p>
+
+        <table class="parcelas">
+          <thead><tr>
+            <th data-t="c_parcela"></th>
+            <th style="text-align:right" data-t="c_pontos"></th>
+            <th style="text-align:right" data-t="c_max"></th>
+          </tr></thead>
+          <tbody id="parcelas"></tbody>
+        </table>
+
+        <div class="botoes">
+          <button class="botao" id="limpar" data-t="b_limpar"></button>
+          <button class="botao" id="exemplo" data-t="b_exemplo"></button>
+          <button class="botao cheio" id="json" data-t="b_json"></button>
+        </div>
+        <p class="recado" id="fonte-pesos" style="margin:12px 0 0"></p>
+      </section>
+
+      <section class="painel">
+        <h2 data-t="h_mapa"></h2>
+        <canvas class="tela" id="mapa"></canvas>
+        <p class="legenda" data-t="leg_mapa"></p>
+      </section>
+    </div>
+
+  </div>
+</main>
+
+<footer class="rodape"><div class="envoltorio"></div></footer>
+
+<script src="assets/js/dados.js"></script>
+<script src="assets/js/igu.js"></script>
+<script src="assets/js/calculadora.js"></script>
+</body>
+</html>
